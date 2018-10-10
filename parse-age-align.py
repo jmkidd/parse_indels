@@ -43,7 +43,7 @@ def process_align_file(fileName):
         line = line.split()
         fileLines.append(line)
     inFile.close()
-    print 'read %i lines' % len(fileLines)
+#    print 'read %i lines' % len(fileLines)
 
     # get info on the seqs
     seqInfo = fileLines[3]
@@ -129,6 +129,7 @@ def process_align_file(fileName):
     if id[1] != 'at':
          print 'no at?'
          print id
+         print res['fileName']
          sys.exit()
 
     id = fileLines[20]
@@ -301,7 +302,7 @@ def prepare_row(res):
 
 ########################################################################################
 
-print 'doing',options.inFile
+#print 'doing',options.inFile
 
 res = process_align_file(options.inFile)
 
@@ -309,7 +310,7 @@ res = process_align_file(options.inFile)
 header, row = prepare_row(res)
 
 outFileName = options.inFile + '.parse'
-print 'writing to',outFileName
+#print 'writing to',outFileName
 outFile = open(outFileName,'w')
 nl = '\t'.join(header) + '\n'
 outFile.write(nl)
