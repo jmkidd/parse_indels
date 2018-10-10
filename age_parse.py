@@ -48,7 +48,6 @@ def process_align_file(fileName):
     res['numIdent'] = int(l[1])
     res['fracIdent'] = float(res['numIdent']) / float(res['numAligned'])
     
-        
 #    for i in range(25):
 #         print i, fileLines[i]
 
@@ -76,6 +75,16 @@ def process_align_file(fileName):
     res['seq2Dir'] = seqInfo[3]
     res['seq2Start'] = coords[0]
     res['seq2End'] = coords[1]
+
+    # low identity alignments, has problem, likely N or not spanned...
+    res['lowIDent'] = False
+    if res['fracIdent'] < 0.80:
+        res['lowIDent'] = True
+        return res
+    
+        
+
+
 
     
     # get the align info
@@ -251,6 +260,12 @@ def prepare_row(res):
     header.extend(['seq2Name','seq2Dir','seq2Start','seq2End'])
     row.extend([res['seq2Name'],res['seq2Dir'],res['seq2Start'],res['seq2End']])
     
+    if res['lowIDent'] is True:
+        header.extend(['numAligned','fracIdent','lowIDent'])
+        row.extend([res['numAligned'], '%.4f' % res['fracIdent'],res['lowIDent'] ])    
+        
+        return (header,row)    
+    
     header.extend(['s1AlignDir','s1AlignLeftStart','s1AlignLeftEnd','s1AlignRightStart','s1AlignRightEnd'])    
     row.extend([res['align']['s1Dir'],res['align']['s1Left'][0],res['align']['s1Left'][1],res['align']['s1Right'][0],res['align']['s1Right'][1]])
 
@@ -311,8 +326,8 @@ def prepare_row(res):
     header.append('hasAlternative')
     row.append(res['hasAlternative'])
         
-    header.extend(['numAligned','fracIdent'])
-    row.extend([res['numAligned'], '%.4f' % res['fracIdent'] ])    
+    header.extend(['numAligned','fracIdent','lowIDent'])
+    row.extend([res['numAligned'], '%.4f' % res['fracIdent'],res['lowIDent'] ])    
         
         
     return(header,row)
