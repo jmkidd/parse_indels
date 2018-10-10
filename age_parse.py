@@ -83,9 +83,9 @@ def process_align_file(fileName):
     res['seq2End'] = coords[1]
 
     # low identity alignments, has problem, likely N or not spanned...
-    res['lowIDent'] = False
+    res['lowIDent'] = 'No'
     if res['fracIdent'] < 0.80:
-        res['lowIDent'] = True
+        res['lowIDent'] = 'Yes'
         return res
     
     # get the align info
@@ -95,6 +95,12 @@ def process_align_file(fileName):
          sys.exit()
     
     align = fileLines[12]
+    if 'EXCISED' not in align:
+        res['lowIDent'] = 'noExcised'
+        return res
+
+        
+        
     res['align'] = {}
     res['align']['s1Dir'] = align[2]
     coords = align[3]
@@ -261,7 +267,7 @@ def prepare_row(res):
     header.extend(['seq2Name','seq2Dir','seq2Start','seq2End'])
     row.extend([res['seq2Name'],res['seq2Dir'],res['seq2Start'],res['seq2End']])
     
-    if res['lowIDent'] is True:
+    if res['lowIDent'] != 'No':
         header.extend(['numAligned','fracIdent','lowIDent'])
         row.extend([res['numAligned'], '%.4f' % res['fracIdent'],res['lowIDent'] ])    
         
