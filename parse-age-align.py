@@ -43,7 +43,7 @@ def process_align_file(fileName):
         line = line.split()
         fileLines.append(line)
     inFile.close()
-    print 'read %i lines' % len(fileLines)
+#    print 'read %i lines' % len(fileLines)
 
     #check alternative
     res['hasAlternative'] = 'no'
