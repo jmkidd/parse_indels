@@ -43,7 +43,29 @@ def process_align_file(fileName):
         line = line.split()
         fileLines.append(line)
     inFile.close()
-#    print 'read %i lines' % len(fileLines)
+    print 'read %i lines' % len(fileLines)
+
+    #check alternative
+    res['hasAlternative'] = 'no'
+    if fileLines[18][0] == 'ALTERNATIVE':
+        res['hasAlternative'] = 'yes'
+        del(fileLines[20])
+        del(fileLines[19])
+        del(fileLines[18])
+        
+    
+    
+    # get score info
+    l = fileLines[7]
+    res['numAligned'] = int(l[1])
+    l = fileLines[8]
+    res['numIdent'] = int(l[1])
+    res['fracIdent'] = float(res['numIdent']) / float(res['numAligned'])
+    
+        
+#    for i in range(25):
+#         print i, fileLines[i]
+
 
     # get info on the seqs
     seqInfo = fileLines[3]
@@ -297,6 +319,14 @@ def prepare_row(res):
     b = [str(j) for j in res['IDin']['s2Coords'][1]]
     b = '-'.join(b)
     row.extend([res['IDin']['s2Len'],a,b])
+    
+    
+    header.append('hasAlternative')
+    row.append(res['hasAlternative'])
+        
+    header.extend(['numAligned','fracIdent'])
+    row.extend([res['numAligned'], '%.4f' % res['fracIdent'] ])    
+        
         
     return(header,row)
 
