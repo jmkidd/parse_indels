@@ -47,7 +47,7 @@ def process_align_file(fileName):
 
     #check alternative
     res['hasAlternative'] = 'no'
-    if fileLines[18][0] == 'ALTERNATIVE':
+    if fileLines[18] != [] and fileLines[18][0] == 'ALTERNATIVE':
         res['hasAlternative'] = 'yes'
         del(fileLines[20])
         del(fileLines[19])
