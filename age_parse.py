@@ -1,6 +1,7 @@
 # age_parse
 # functions for parsing of age files
 import sys
+import re
 
 ########################################################################################
 def coords_to_parts(coords):
@@ -20,6 +21,10 @@ def process_align_file(fileName):
     inFile = open(fileName,'r')
     for line in inFile:
         line = line.rstrip()
+        
+        # deal with multiple spaces...
+        line = re.sub(' +', ' ', line)
+        
         line = line.replace('\'','')
         line = line.replace('[ ','[')
         line = line.replace(' ] ',' ]')
@@ -71,6 +76,7 @@ def process_align_file(fileName):
         sys.exit()
     res['seq2Name'] = seqInfo[6]
     coords = seqInfo[2]
+
     coords  = coords_to_parts(coords)
     res['seq2Dir'] = seqInfo[3]
     res['seq2Start'] = coords[0]
@@ -81,11 +87,6 @@ def process_align_file(fileName):
     if res['fracIdent'] < 0.80:
         res['lowIDent'] = True
         return res
-    
-        
-
-
-
     
     # get the align info
     if fileLines[11][0] != 'Alignment:':
